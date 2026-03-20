@@ -232,8 +232,8 @@
 
       .close-btn {
         position: absolute;
-        top: -15px;
-        right: -10px;
+        top: -17px;
+        right: 17px;
         background: white;
         border-radius: 50%;
         width: 34px;
@@ -486,6 +486,7 @@
       <span>MAP</span>
     </div>
 
+    <!-- マップモーダル -->
     <div id="mapModal" class="modal" onclick="closeMap(event)">
       <div class="modal-content" onclick="event.stopPropagation()">
         <div class="close-btn" onclick="closeMap()">&times;</div>
@@ -506,6 +507,7 @@
         </div>
       </div>
     </div>
+    <!-- /マップモーダル -->
 
     <script>
       function openMap(targetId = null) {
