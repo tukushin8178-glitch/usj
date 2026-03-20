@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>USJ 25周年満喫計画</title>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        background-color: #f0f4f8;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      header {
+        background-color: #0055b8;
+        color: white;
+        padding: 25px 20px;
+        text-align: center;
+        border-bottom: 5px solid #e60012;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 26px;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .container {
+        padding: 20px;
+        max-width: 600px;
+        margin: auto;
+        padding-bottom: 80px;
+      }
+
+      .notice-box {
+        background-color: #fff8e1;
+        border-left: 5px solid #ffb300;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .notice-box p {
+        margin: 0;
+        font-size: 14px;
+        color: #555;
+      }
+
+      .notice-box strong {
+        color: #d84315;
+        display: block;
+        margin-bottom: 5px;
+        font-size: 15px;
+      }
+
+      h2 {
+        border-left: 5px solid #0055b8;
+        padding-left: 10px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        font-size: 20px;
+        color: #0055b8;
+      }
+
+      .timeline {
+        position: relative;
+        margin: 20px 0;
+        padding-left: 30px;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 5px;
+        bottom: 5px;
+        width: 2px;
+        background: #ddd;
+      }
+
+      .event {
+        margin-bottom: 25px;
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .time-box {
+        width: 65px;
+        text-align: right;
+        margin-right: 15px;
+        flex-shrink: 0;
+      }
+
+      .time {
+        font-weight: bold;
+        color: #0055b8;
+        font-size: 16px;
+      }
+
+      .content-box {
+        flex-grow: 1;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      .title {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0 0 5px 0;
+        display: flex;
+        align-items: center;
+        line-height: 1.3;
+      }
+
+      .map-pin-sn {
+        background-color: #0055b8;
+        color: white;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        margin-right: 8px;
+        flex-shrink: 0;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition:
+          transform 0.2s,
+          background-color 0.2s;
+      }
+      .map-pin-sn:hover,
+      .map-pin-sn:active {
+        transform: scale(1.1);
+        background-color: #e60012;
+      }
+
+      .desc {
+        font-size: 14px;
+        color: #555;
+        margin: 0;
+      }
+      .link-text {
+        display: inline-block;
+        margin-top: 8px;
+        font-size: 13px;
+        color: #0055b8;
+        text-decoration: none;
+        font-weight: bold;
+        word-break: break-all;
+      }
+
+      .credit {
+        text-align: center;
+        font-size: 11px;
+        color: #999;
+        margin-top: 30px;
+        padding: 10px;
+        border-top: 1px solid #ddd;
+      }
+      .credit a {
+        color: #999;
+        text-decoration: none;
+      }
+
+      .float-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 65px;
+        height: 65px;
+        background-color: #e60012;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: bold;
+        line-height: 1.2;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        z-index: 1000;
+        border: 2px solid white;
+        transition: transform 0.2s ease;
+      }
+      .float-btn:active {
+        transform: scale(0.95);
+      }
+      .float-btn svg {
+        margin-bottom: 2px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .modal.show {
+        display: flex;
+        opacity: 1;
+      }
+
+      .modal-content {
+        background: #f0f4f8;
+        padding: 15px;
+        border-radius: 12px;
+        max-width: 95%;
+        width: 500px;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .close-btn {
+        position: absolute;
+        top: -15px;
+        right: -10px;
+        background: white;
+        border-radius: 50%;
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+      }
+
+      .map-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 8px;
+        border: 3px solid white;
+      }
+      .map-image {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .map-pin {
+        position: absolute;
+        background-color: #0055b8;
+        color: white;
+        border-radius: 50%;
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        border: 2px solid white;
+        transform: translate(-50%, -50%);
+        transition: all 0.3s ease;
+      }
+
+      @keyframes active-pin-anim {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        50% {
+          transform: translate(-50%, -80%) scale(1.3);
+          box-shadow: 0 10px 15px rgba(230, 0, 18, 0.6);
+        }
+      }
+
+      .pin-active {
+        animation: active-pin-anim 0.5s 3 ease-in-out forwards;
+        background-color: #e60012 !important;
+        z-index: 5;
+      }
+
+      #pin-1 {
+        top: 61%;
+        left: 48%;
+      }
+      #pin-2 {
+        top: 40%;
+        left: 75%;
+      }
+      #pin-3 {
+        top: 15%;
+        left: 54%;
+      }
+      #pin-4 {
+        top: 50%;
+        left: 50%;
+      }
+      #pin-5 {
+        top: 36%;
+        left: 38%;
+      }
+      #pin-6 {
+        top: 47%;
+        left: 35%;
+      }
+      #pin-7 {
+        top: 51%;
+        left: 26%;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>USJ 25周年満喫計画</h1>
+    </header>
+
+    <div class="container">
+      <h2>タイムスケジュール</h2>
+      <p style="font-size: 13px; color: #777; margin-bottom: 15px">
+        ※番号アイコン（<span style="color: #0055b8; font-weight: bold">●</span
+        >）をタップするとマップ上の位置を確認できます。
+      </p>
+
+      <div class="timeline">
+        <div class="event">
+          <div class="time-box"><div class="time">08:00</div></div>
+          <div class="content-box">
+            <p class="title">集合</p>
+            <p class="desc">OPENの30分前</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">08:30</div></div>
+          <div class="content-box">
+            <p class="title">パーク入場</p>
+            <p class="desc">ハリドリに直行！</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">09:30</div></div>
+          <div class="content-box">
+            <p class="title">
+              <span class="map-pin-sn" onclick="openMap(1)">1</span>ハリドリ
+            </p>
+            <p class="desc">歴代周年曲が聴けるらしい！</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">10:00</div></div>
+          <div class="content-box">
+            <p class="title">全員合流</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">10:30</div></div>
+          <div class="content-box">
+            <p class="title">
+              <span class="map-pin-sn" onclick="openMap(2)">2</span
+              >ジュラシックワールド
+            </p>
+            <p class="desc">
+              ミッションウォーク+グリーティング+軽食で30～40分？
+            </p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">11:00</div></div>
+          <div class="content-box">
+            <p class="title">
+              <span class="map-pin-sn" onclick="openMap(3)">3</span>ミニオン
+            </p>
+            <p class="desc">ランチまでに時間あれば！</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">12:00</div></div>
+          <div class="content-box">
+            <p class="title">ランチ</p>
+            <p class="desc">各々食べたいの考えておいてね</p>
+            <a
+              href="https://www.usj.co.jp/web/ja/jp/25th-anniversary-discover-u/foods"
+              target="_blank"
+              class="link-text"
+              >▶︎ 25周年フードメニューを確認</a
+            >
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">13:00</div></div>
+          <div class="content-box">
+            <p class="title">
+              <span class="map-pin-sn" onclick="openMap(4)">4</span
+              >デロリアン&ショップ巡回
+            </p>
+            <p class="desc">ドク！25周年グッズ！</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">14:00</div></div>
+          <div class="content-box">
+            <p class="title">
+              <span class="map-pin-sn" onclick="openMap(5)">5</span>パレード
+            </p>
+            <p class="desc">NYエリア。約40分。Vaundy流れます。</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">15:00</div></div>
+          <div class="content-box">
+            <p class="title">
+              <span class="map-pin-sn" onclick="openMap(6)">6</span
+              >スペファン・ショー等
+            </p>
+            <p class="desc">余った時間でひたすら遊び尽くす！</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">18:00</div></div>
+          <div class="content-box">
+            <p class="title">
+              <span class="map-pin-sn" onclick="openMap(7)">7</span>マスカレード
+            </p>
+            <p class="desc">8人全員同じグループになれますように...</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="time-box"><div class="time">20:00</div></div>
+          <div class="content-box">
+            <p class="title">解散</p>
+            <p class="desc">ありがとう、USJ。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="credit">
+        画像出典：<a href="https://www.his-j.com/" target="_blank">HIS</a>
+      </div>
+    </div>
+
+    <div class="float-btn" onclick="openMap()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        width="24"
+        height="24"
+      >
+        <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+        <line x1="9" y1="3" x2="9" y2="18"></line>
+        <line x1="15" y1="6" x2="15" y2="21"></line>
+      </svg>
+      <span>MAP</span>
+    </div>
+
+    <div id="mapModal" class="modal" onclick="closeMap(event)">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="close-btn" onclick="closeMap()">&times;</div>
+
+        <div class="map-container">
+          <img
+            src="https://www.his-j.com/kokunai/usj/image/parkmap.jpg"
+            alt="USJパークマップ"
+            class="map-image"
+          />
+          <div class="map-pin" id="pin-1">1</div>
+          <div class="map-pin" id="pin-2">2</div>
+          <div class="map-pin" id="pin-3">3</div>
+          <div class="map-pin" id="pin-4">4</div>
+          <div class="map-pin" id="pin-5">5</div>
+          <div class="map-pin" id="pin-6">6</div>
+          <div class="map-pin" id="pin-7">7</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openMap(targetId = null) {
+        const modal = document.getElementById("mapModal");
+        modal.classList.add("show");
+
+        document.querySelectorAll(".map-pin").forEach((pin) => {
+          pin.classList.remove("pin-active");
+        });
+
+        if (targetId) {
+          const targetPin = document.getElementById("pin-" + targetId);
+          if (targetPin) {
+            targetPin.classList.add("pin-active");
+          }
+        }
+      }
+
+      function closeMap(event) {
+        const modal = document.getElementById("mapModal");
+        modal.classList.remove("show");
+
+        setTimeout(() => {
+          document.querySelectorAll(".map-pin").forEach((pin) => {
+            pin.classList.remove("pin-active");
+          });
+        }, 300);
+      }
+    </script>
+  </body>
+</html>
